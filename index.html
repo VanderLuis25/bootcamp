@@ -24,13 +24,11 @@
 
     <div class="container-usuario" id="usuarioContainer">
       <button id="usuario"><i class="fa-solid fa-user"></i></button>
-
       <div class="cart" id="carrinhoContainer">
         <button id="carrinho"><i class="fa-solid fa-cart-shopping"></i><span class="badge">0</span></button>
       </div>
-
       <div class="curtidasContainer" id="curtidasContainer">
-        <button id="curtidas"><i class="fa-solid fa-heart"></i></i><span class="badge">0</span></button>
+        <button id="curtidas"><i class="fa-solid fa-heart"></i><span class="badge">0</span></button>
       </div>
     </div>
   </header>
@@ -38,21 +36,17 @@
   <div class="modal" id="userModal">
     <div class="modal-content">
       <span class="close" id="closeModal">&times;</span>
-
       <div id="loginArea">
         <h2>Login</h2>
         <input type="text" id="loginEmail" placeholder="Email" />
         <input type="password" id="loginSenha" placeholder="Senha" />
-
         <div class="checkbox">
           <input type="checkbox" id="manterConectado">
           <label for="manterConectado">Manter conectado</label>
         </div>
-
         <button onclick="login()">Entrar</button>
         <button onclick="showCadastro()">Cadastrar</button>
       </div>
-
       <div id="cadastroArea" style="display: none;">
         <h2>Cadastro</h2>
         <input type="text" id="cadNome" placeholder="Nome" />
@@ -60,7 +54,6 @@
         <input type="password" id="cadSenha" placeholder="Senha" />
         <button onclick="salvarCadastro()">Salvar</button>
       </div>
-
       <p class="success-message" id="successMsg">
         Parabéns! Seu cadastro foi realizado com sucesso.
       </p>
@@ -77,18 +70,20 @@
     </div>
   </div>
 
+  <!-- Menu Hamburguer Lateral de Categorias -->
   <div class="container-categorias">
+    <button class="hamburguer-categorias" id="btnHamburguerCategorias">
+      <i class="fa-solid fa-bars"></i>
+    </button>
     <nav id="nav-categorias">
       <button class="botao-categorias ativo" id="btnNav">
         <i class="fa-solid fa-border-all"></i>
         Todos
       </button>
-
       <button class="botao-categorias" id="btnSmartphones">
         <i class="fa-solid fa-mobile-retro"></i>
         Smartphones
       </button>
-
       <button class="botao-categorias" id="btnLaptops">
         <i class="fa-solid fa-laptop"></i>
         Laptops
@@ -101,12 +96,10 @@
         <i class="fa-solid fa-headphones"></i>
         Headphones
       </button>
-
       <button class="botao-categorias" id="btnAccessories">
         <i class="fa-solid fa-keyboard"></i>
         Acessórios
       </button>
-
       <button class="botao-categorias" id="btnSmartwatch">
         <i class="fa-solid fa-clock"></i>
         Smartwatch
@@ -121,7 +114,6 @@
   </div>
 
   <div class="ordem">
-
     <div class="controle">
       <p>Preço máximo: R$</p>
       <span class="valor" id="valorExibido">20000</span>
@@ -138,10 +130,9 @@
     </div>
   </div>
 
-
   <div class="produtos">
     <div class="container-produtos">
-      <!--aque o script mostra todos os produtos -->
+      <!-- aqui o script mostra todos os produtos -->
     </div>
   </div>
 
@@ -164,28 +155,24 @@
   <footer class="footer-container">
     <div class="sobre">
       <h4>Sobre a TechStore</h4>
-      <p>Sua oja de confiança para produtos eletrônicos de qualidade.</p>
+      <p>Sua loja de confiança para produtos eletrônicos de qualidade.</p>
     </div>
-
     <div class="atendimento">
       <h4>Atendimento</h4>
       <p><i class="fa-solid fa-phone"></i>(11)99999-9999</p>
       <p><i class="fa-solid fa-envelope"></i>contato@techstore.com</p>
     </div>
-
-    <div class="redes-sciais">
+    <div class="redes-sociais">
       <h4>Redes Sociais</h4>
       <div class="icone-social">
         <i class="fa-brands fa-square-facebook"></i>
         <i class="fa-brands fa-instagram"></i>
         <i class="fa-brands fa-square-x-twitter"></i>
       </div>
-
     </div>
     <div class="rodape">
       <p>2026 - TechStore - Todos os direitos reservados</p>
     </div>
-
   </footer>
 
   <div id="toast"></div>

@@ -914,7 +914,7 @@ window.onload = () => {
     mostrarBemVindo(user.nome);
   } else {
     mostrarIconesPadrao();
-  }
+  } 
 
   if (meuSlider) {
     meuSlider.addEventListener('input', aplicarFiltrosEOrdenacao);
@@ -929,3 +929,21 @@ window.onload = () => {
   atualizarBadgeCarrinho();
   atualizarContadorCurtidas();
 };
+// Seleciona o botão do hambúrguer e o menu de navegação
+const btnHamburguerCategorias = document.getElementById('btnHamburguerCategorias');
+const navCategorias = document.getElementById('nav-categorias');
+
+// Seleciona todos os botões de categoria dentro do menu
+const botoesCategorias = document.querySelectorAll('.botao-categorias');
+
+// Evento para abrir/fechar o menu ao clicar no botão do hambúrguer
+btnHamburguerCategorias.addEventListener('click', () => {
+  navCategorias.classList.toggle('show');
+});
+
+// Evento para fechar o menu ao clicar em qualquer botão de categoria
+botoesCategorias.forEach(botao => {
+  botao.addEventListener('click', () => {
+    navCategorias.classList.remove('show');
+  });
+});
