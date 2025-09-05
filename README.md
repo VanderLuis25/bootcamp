@@ -23,7 +23,7 @@ Interação com o Usuário: Um sistema de login e cadastro com salvamento no nav
 Este projeto não é apenas um código, mas a prova do meu comprometimento em aprender e evoluir. A cada desafio superado, sinto-me mais preparado para buscar novos conhecimentos e me aprofundar no mundo do desenvolvimento.
 
 ## Screenshot
-![](./img/responsivo.png)
+![](./img/Responsivo.png)
 
 ## My process
 - HTML
