@@ -11,7 +11,6 @@ function formatarMoeda(valor) {
   }).format(valor);
 }
 
-
 // PRODUTOS DO SITE
 let produtos = [{
   id: 1,
@@ -257,7 +256,6 @@ let produtos = [{
 
   ],
   descricao: "Projetada para longas horas sentado para jogos, trabalho e relaxamento"
-
 }];
 
 const containerProdutos = document.querySelector(".container-produtos");
@@ -406,7 +404,7 @@ function finalizarCompra() {
 // ================= EXIBIR PRODUTOS =================
 let produtosVisiveis = [...produtos];
 
-function mostrarProdutos(listaProdutos) {
+function mostrarProdutos(listaProdutos, mostrarOriginal = false) {
   let htmlProdutos = "";
   let produtosCurtidos = [];
   if (localStorage.getItem("logado") === "true") {
@@ -421,16 +419,15 @@ function mostrarProdutos(listaProdutos) {
     listaProdutos.forEach((prd) => {
       let precoHtml;
       
-      // Nova lógica para exibir o preço com desconto
-      if (prd.desconto !== null && prd.precoOriginal !== null) {
+      if (mostrarOriginal && prd.desconto !== null && prd.precoOriginal !== null) {
         const precoAtual = prd.precoOriginal * (1 - prd.desconto / 100);
         precoHtml = `
           <span class="preco-original">${formatarMoeda(prd.precoOriginal)}</span>
           <span class="preco-atual">${formatarMoeda(precoAtual)}</span>
         `;
       } else {
-        // Lógica para produtos sem desconto
-        precoHtml = `<span class="preco-atual">${formatarMoeda(prd.preco)}</span>`;
+        const precoAtual = prd.desconto !== null ? prd.precoOriginal * (1 - prd.desconto / 100) : prd.preco;
+        precoHtml = `<span class="preco-atual">${formatarMoeda(precoAtual)}</span>`;
       }
       
       const badgeDesconto = prd.desconto !== null ? `<div class="desconto-badge">${prd.desconto}% OFF</div>` : "";
@@ -485,7 +482,6 @@ function gerenciarCurtida(idProduto) {
 
   localStorage.setItem(chaveCurtidas, JSON.stringify(curtidas));
   atualizarContadorCurtidas();
-  // Aplicar filtros após curtir/descurtir para manter a ordenação
   aplicarFiltrosEOrdenacao();
 }
 
@@ -540,10 +536,19 @@ nav.forEach(item => {
 
     if (item.categoria === "all") {
       produtosVisiveis = [...produtos];
+
+      if (meuSlider) {
+        meuSlider.value = meuSlider.max;
+        valorExibido.textContent = formatarMoeda(meuSlider.max);
+      }
+      
+      if (ordenacao) {
+        ordenacao.value = "default";
+      }
+
     } else {
       produtosVisiveis = produtos.filter(prd => prd.categoria === item.categoria);
     }
-    // AQUI: Aplica todos os filtros e ordenação após a filtragem por categoria
     aplicarFiltrosEOrdenacao();
   });
 });
@@ -552,7 +557,8 @@ nav.forEach(item => {
 function mostrarOferta() {
   const produtosComDescontos = produtos.filter(prd => prd.desconto !== null);
   produtosVisiveis = [...produtosComDescontos];
-  aplicarFiltrosEOrdenacao();
+
+  aplicarFiltrosEOrdenacao(true);
 
   const botoes = document.querySelectorAll(".botao-categorias");
   botoes.forEach(btn => btn.classList.remove("ativo"));
@@ -869,23 +875,18 @@ function getTipoOrdenacao() {
   return ordenacao.value;
 }
 
-// ----------------------------------------------------
 // Função unificada para aplicar todos os filtros
-// ----------------------------------------------------
-function aplicarFiltrosEOrdenacao() {
+function aplicarFiltrosEOrdenacao(mostrarOriginal = false) {
   let produtosParaExibir = [...produtosVisiveis];
 
-  // 1. FILTRO POR PREÇO (baseado no slider)
   const precoMaximo = getPrecoMaximo();
   produtosParaExibir = produtosParaExibir.filter(produto => {
-    // Calcula o preço final do produto (com desconto se houver)
     const precoReal = produto.precoOriginal && produto.desconto ?
       produto.precoOriginal * (1 - produto.desconto / 100) :
       produto.preco;
     return precoReal <= precoMaximo;
   });
 
-  // 2. ORDENAÇÃO
   const tipoOrdenacao = getTipoOrdenacao();
   switch (tipoOrdenacao) {
     case "nome-asc":
@@ -909,7 +910,8 @@ function aplicarFiltrosEOrdenacao() {
       });
       break;
   }
-  mostrarProdutos(produtosParaExibir);
+  
+  mostrarProdutos(produtosParaExibir, mostrarOriginal);
 }
 
 // Configuração inicial do slider e eventos
@@ -917,6 +919,10 @@ if (meuSlider && valorExibido) {
   valorExibido.textContent = formatarMoeda(meuSlider.value);
   meuSlider.addEventListener('input', function() {
     valorExibido.textContent = formatarMoeda(this.value);
+    
+    if (ordenacao) {
+        ordenacao.value = "default";
+    }
   });
   meuSlider.addEventListener('change', aplicarFiltrosEOrdenacao);
 }
@@ -938,33 +944,7 @@ window.onload = () => {
     mostrarIconesPadrao();
   }
 
-  // APLICA TODOS OS FILTROS E MOSTRA OS PRODUTOS
   aplicarFiltrosEOrdenacao();
-
-  atualizarBadgeCarrinho();
-  atualizarContadorCurtidas();
-};
-window.onload = () => {
-  let user = JSON.parse(localStorage.getItem("user"));
-  let logado = localStorage.getItem("logado");
-
-  configurarEventosLoginECadastro();
-
-  if (user && logado === "true") {
-    mostrarBemVindo(user.nome);
-  } else {
-    mostrarIconesPadrao();
-  } 
-
-  if (meuSlider) {
-    meuSlider.addEventListener('input', aplicarFiltrosEOrdenacao);
-  }
-  if (ordenacao) {
-    ordenacao.addEventListener('change', aplicarFiltrosEOrdenacao);
-  }
-
-  // AQUI É ONDE VOCÊ MOSTRA TODOS OS PRODUTOS
-  mostrarProdutos(produtos);
 
   atualizarBadgeCarrinho();
   atualizarContadorCurtidas();
