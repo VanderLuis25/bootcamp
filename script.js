@@ -1,3 +1,21 @@
+// Função para formatar um número como moeda brasileira
+function formatarMoeda(valor) {
+  // Verifica se o valor é nulo ou indefinido para evitar erros
+  if (valor === null || valor === undefined) {
+    return 'R$ 0,00';
+  }
+  // Cria um formatador de número para a moeda brasileira (BRL)
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(valor);
+}
+
+
+
+
 // PRODUTOS DO SITE
 let produtos = [{
   id: 1,
@@ -324,7 +342,7 @@ function renderizarCarrinho() {
       <img src="${produto.imagem}" alt="${produto.nome}">
       <div class="info">
         <span class="nome-item">${produto.nome}</span>
-        <span class="preco-item">R$ ${produto.preco.toFixed(2)}</span>
+        <span class="preco-item">${formatarMoeda(produto.preco)}</span>
       </div>
       <div class="quantidade-controle">
         <button onclick="mudarQuantidade(${produto.id}, -1)">-</button>
@@ -338,7 +356,7 @@ function renderizarCarrinho() {
     listaCarrinho.appendChild(item);
   });
 
-  totalCarrinho.textContent = `Total: R$ ${total.toFixed(2)}`;
+ totalCarrinho.textContent = `Total: ${formatarMoeda(total)}`;
   btnFinalizar.style.display = 'block';
 }
 
@@ -414,16 +432,16 @@ function mostrarProdutos(listaProdutos, isOferta = false) {
       // Se não, mostra apenas o preço final.
       if (isOferta) {
         // Exibe o preço original riscado se ele existir
-        const precoOriginalHtml = (prd.precoOriginal !== null && prd.desconto !== null) ?
-          `<span class="preco-original">R$ ${prd.precoOriginal.toFixed(2)}</span>` : '';
+    const precoOriginalHtml = (prd.precoOriginal !== null && prd.desconto !== null) ?
+  `<span class="preco-original">${formatarMoeda(prd.precoOriginal)}</span>` : '';
         precoHtml =
-         `${precoOriginalHtml} <span class="preco-atual">R$ ${prd.preco.toFixed(2)}</span>`;
-      } else {
+precoHtml =
+  `${precoOriginalHtml} <span class="preco-atual">${formatarMoeda(prd.preco)}</span>`;      } else {
         // Exibe apenas o preço final (com ou sem desconto)
         const precoFinal = (prd.precoOriginal != null && prd.desconto != null)
           ? prd.precoOriginal * (1 - prd.desconto / 100)
           : prd.preco;
-        precoHtml = `<span class="preco-atual">R$ ${precoFinal.toFixed(2)}</span>`;
+      precoHtml = `<span class="preco-atual">${formatarMoeda(precoFinal)}</span>`;
       }
 
 
@@ -812,7 +830,7 @@ function verDetalhes(idProduto) {
   if (produto.desconto && produto.precoOriginal) {
     precoExibido = produto.precoOriginal * (1 - produto.desconto / 100);
   }
-  detalhesPreco.innerHTML = `R$ ${precoExibido.toFixed(2)}`;
+detalhesPreco.innerHTML = `${formatarMoeda(precoExibido)}`;
 
   if (btnAdicionarModal) {
     btnAdicionarModal.onclick = () => {
